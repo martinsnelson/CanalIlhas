@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Seguranca.DTO">
+      <HintPath>..\..\waSeguranca\branches\S88639\01 - Fontes\Seguranca.DTO\bin\Debug\Seguranca.DTO.dll</HintPath>
+    </Reference>
+    <Reference Include="Seguranca.ServiceAgent">
+      <HintPath>..\..\waSeguranca\branches\S88639\01 - Fontes\Seguranca.ServiceAgent\bin\Debug\Seguranca.ServiceAgent.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

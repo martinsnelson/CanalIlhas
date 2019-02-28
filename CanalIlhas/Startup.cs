@@ -48,6 +48,20 @@ namespace CanalIlhas
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            
+            /*
+            app.UseCookieAuthentication(options => {
+                // Defini o tipo de autenticação
+                options.AuthenticationScheme = "Cookie";
+                // url para o usuário não autenticado será direcionado
+                options.LoginPAth = new PathString("/Conta/NaoAutorizado");
+                // url para o usuário não autorizado
+                options.AccessDeniedPath = new PathString("/Conta/Proibido");
+                // Matem o usuário autenticado até seu cookie expirar
+                options.AutomaticAuthenticate = true;
+                options.AutomaticChallenge = true;
+            });
+            */
 
             app.UseMvc(routes =>
             {

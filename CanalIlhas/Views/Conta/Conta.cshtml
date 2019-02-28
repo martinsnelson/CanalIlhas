@@ -1,0 +1,142 @@
+﻿@model CanalIlhas.Models.ContaViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canal das Ilhas - Admin</title>
+    <!--Made with love by Mutiullah Samim -->
+    <!--Bootsrap 4 CDN-->
+    <link rel="stylesheet" href="~/lib/jquery-4/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="~/lib/fontawesome/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/lib/fontawesome/css.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    s<link rel="stylesheet" href="~/lib/webfonts/fa-solid-900.woff2" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <!--Custom styles-->
+    <link rel="stylesheet" type="text/css" href="~/css/conta.css">
+</head>
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-center h-100">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Canal das Ilhas</h3>
+                    @*<div class="d-flex justify-content-end social_icon">
+                        <span><i class="fab fa-facebook-square"></i></span>
+                        <span><i class="fab fa-google-plus-square"></i></span>
+                        <span><i class="fab fa-twitter-square"></i></span>
+                    </div>*@
+                </div>
+                <div class="card-body">
+                    <form>
+                        @using (Html.BeginForm("Autenticacao", "Conta", FormMethod.Post, new { id = "loginForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            @Html.TextBoxFor(model => model.UsuarioNome, htmlAttributes: new { @class = "form-control", @Placeholder = "Dominio\\usuário",  @alt = "Dominio\\usuário", @required = "required" })
+                            @*<input type="text" class="form-control" placeholder="Dominio\usuário">*@
+
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            @Html.TextBoxFor(model => model.Senha, htmlAttributes: new { @class = "form-control", @Placeholder = "Senha", @alt = "Senha", @required = "required" })
+                            @*<input type="password" class="form-control" placeholder="Senha">*@
+                        </div>
+                            <div class="row align-items-center remember">
+                                <input type="checkbox">Lembrar
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Entrar" class="btn float-right login_btn">
+                            </div>
+                        }
+                    </form>
+                </div>
+                <div class="card-footer">
+                    @*<div class="d-flex justify-content-center links">
+                        Don't have an account?<a href="#">Sign Up</a>
+                    </div>*@
+                    <div class="d-flex justify-content-center">
+                        <a href="http://centraldousuario/centraldousuario/Login/AlterarSenha/">Redefinir senha?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+@*
+        <div class="card">
+            <div class="card-header">
+                <h3>Canal das Ilhas</h3>
+                <div class="d-flex justify-content-end social_icon">
+                    <span><i class="fab fa-facebook-square"></i></span>
+                    <span><i class="fab fa-google-plus-square"></i></span>
+                    <span><i class="fab fa-twitter-square"></i></span>
+                </div>
+            </div>
+            <div class="card-body">
+                <form>
+                   
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="username">
+
+                        </div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input type="password" class="form-control" placeholder="password">
+                    </div>
+                    <div class="row align-items-center remember">
+                        <input type="checkbox">Remember Me
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Entrar" class="btn float-right login_btn">
+                    </div>
+                   
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-center links">
+                    Don't have an account?<a href="#">Sign Up</a>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <a href="#">Forgot your password?</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="conta">
+            @using (Html.BeginForm("Autenticacao", "Conta", FormMethod.Post, new { id = "loginForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <fieldset>
+                    <div>
+                        @Html.TextBoxFor(model => model.UsuarioNome)
+                        @Html.TextBoxFor(model => model.Senha)
+                    </div>
+                    <div>
+                        <input type="submit" name="entrar" value="Entrar" />
+                    </div>
+                </fieldset>
+            }
+
+        </div>
+    </body>
+    </html>
+*@
