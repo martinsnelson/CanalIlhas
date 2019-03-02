@@ -15,6 +15,17 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CanalIlhas.Repository\CanalIlhas.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Seguranca.DTO">
+      <HintPath>..\..\waSeguranca\branches\S88639\01 - Fontes\Seguranca.DTO\bin\Debug\Seguranca.DTO.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
