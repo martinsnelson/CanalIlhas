@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CanalIlhas.Data;
+using CanalIlhas.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace CanalIlhas
 {
@@ -23,13 +24,47 @@ namespace CanalIlhas
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
+            //services.Configure<CookiePolicyOptions>(options =>
+            //{
+            //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+            //    options.CheckConsentNeeded = context => true;
+            //    options.MinimumSameSitePolicy = SameSiteMode.None;
+            //});
+
+            //services.AddSession(options =>
+            //{
+            //    // Set a short timeout for easy testing.
+            //    options.IdleTimeout = TimeSpan.FromSeconds(40);
+            //    options.Cookie.HttpOnly = true;
+            //});
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<UsuarioAplicativo, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                // Cookie Configuração
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Expiration = TimeSpan.FromMinutes(1);
+                options.LoginPath = "/Conta/Login";
+                options.LogoutPath = "/Conta/Logout";
+                options.AccessDeniedPath = "/Conta/Negado";
+                options.SlidingExpiration = true;
+
             });
 
+            services.AddAuthentication(options => 
+            {
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie();
+            
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -46,9 +81,7 @@ namespace CanalIlhas
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
-            
+            //app.UseCookiePolicy();
             /*
             app.UseCookieAuthentication(options => {
                 // Defini o tipo de autenticação
@@ -62,6 +95,11 @@ namespace CanalIlhas
                 options.AutomaticChallenge = true;
             });
             */
+            //app.UseSession();
+
+            app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

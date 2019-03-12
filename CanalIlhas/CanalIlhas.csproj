@@ -23,6 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Krypton">
+      <HintPath>ExternalDll\Krypton.dll</HintPath>
+    </Reference>
     <Reference Include="Seguranca.DTO">
       <HintPath>..\..\waSeguranca\branches\S88639\01 - Fontes\Seguranca.DTO\bin\Debug\Seguranca.DTO.dll</HintPath>
     </Reference>

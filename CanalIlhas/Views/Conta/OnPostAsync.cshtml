@@ -1,0 +1,33 @@
+﻿@model CanalIlhas.Models.Conta.ContaViewModel
+<div id="login">
+    @using (Html.BeginForm("OnPostAsync", "Conta", FormMethod.Post, new { id = "loginForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <p>
+                <span class="fa fa-user"></span>
+                @Html.TextBoxFor(model => model.UsuarioNome, htmlAttributes: new { @class = "logintext", @Placeholder = "Dominio\\Username", @alt = "Login", @required = "required" })
+
+            </p>
+            <p>
+                <span class="fa fa-lock"></span>
+                @Html.PasswordFor(model => model.Senha, htmlAttributes: new { @class = "logintext", @Placeholder = "Senha", @required = "required" })
+
+
+            </p>
+            <div class="row" align="justify">
+                @*<span style="margin-top:10px;"><a target="_blank" style="cursor:help; color :whitesmoke; margin-right:65px; margin-left:20px;font-size:0.9em;" href="@System.Web.Configuration.WebConfigurationManager.AppSettings["AlterarSenha"].ToString()">Redefinir Senha</a></span>*@
+               <input type="submit" value="Logar" />
+            </div>
+        </fieldset>
+    }
+    <div class="clearfix"></div>
+
+    <fieldset>
+        <p>
+            @Html.ValidationMessage("Error_Authentic", null, new { @class = "label label-danger" })
+            @Html.ValidationMessageFor(model => model.UsuarioNome, null, new { @class = "label label-danger" })
+            @Html.ValidationMessageFor(model => model.Senha, null, new { @class = "label label-danger" })
+        </p>
+    </fieldset>
+</div>

@@ -10,12 +10,18 @@ namespace CanalIlhas.Repository.Seguranca
     public class SegurancaRepository
     {
         private readonly string AplicacaoNome = "CANALILHAS";
+        private readonly string AplicacaoNomeTeste = "LOTUS";
+        //private readonly IOptions<> appSettinhgs;
+        ////waSegurancaUrl
+        //public SegurancaRepository(IOptions)
+        //{
+        //}
 
         public ObterUsuarioResponse ObterUsuarioPorLogin(string pUsuarioNome)
         {
             try
             {
-                return new UsuarioServiceAgent().ObterUsuarioPorLogin(new ObterUsuarioPorLoginRequest { Aplicacao = AplicacaoNome, Login = pUsuarioNome });
+                return new UsuarioServiceAgent().ObterUsuarioPorLogin(new ObterUsuarioPorLoginRequest { Aplicacao = AplicacaoNomeTeste, Login = pUsuarioNome });
                 //throw new NotImplementedException();
             }
             catch (Exception e)

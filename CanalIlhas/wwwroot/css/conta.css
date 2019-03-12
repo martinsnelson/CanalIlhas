@@ -30,10 +30,10 @@ html, body {
     color: #FFC312;
 }
 
-    .social_icon span:hover {
-        color: white;
-        cursor: pointer;
-    }
+.social_icon span:hover {
+    color: white;
+    cursor: pointer;
+}
 
 .card-header h3 {
     color: white;
@@ -47,8 +47,8 @@ html, body {
 
 .input-group-prepend span {
     width: 50px;
-    background-color: #FFC312;
-    color: black;
+    background-color: #42c0fb;
+    color: #ffffff;
     border: 0 !important;
 }
 
@@ -61,28 +61,29 @@ input:focus {
     color: white;
 }
 
-    .remember input {
-        width: 20px;
-        height: 20px;
-        margin-left: 15px;
-        margin-right: 5px;
-    }
+.remember input {
+    width: 20px;
+    height: 20px;
+    margin-left: 15px;
+    margin-right: 5px;
+}
 
 .login_btn {
-    color: black;
-    background-color: #FFC312;
+    color: #ffffff;
+    background-color: #42c0fb;
     width: 100px;
 }
 
-    .login_btn:hover {
-        color: black;
-        background-color: white;
-    }
+.login_btn:hover {
+    color: black;
+    background-color: white;
+}
 
 .links {
     color: white;
 }
 
-    .links a {
-        margin-left: 4px;
-    }
+.links a {
+    margin-left: 4px;
+    color: #ffffff;
+}

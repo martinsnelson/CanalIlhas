@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CanalIlhas.Models
+namespace CanalIlhas.Models.Conta
 {
     public class ContaViewModel
     {
@@ -13,5 +13,7 @@ namespace CanalIlhas.Models
         [Display(Name = "Senha")]
         public string Senha { get; set; }
 
+        [Display(Name = "Lembre de mim?")]
+        public bool Lembrar { get; set; }
     }
 }
