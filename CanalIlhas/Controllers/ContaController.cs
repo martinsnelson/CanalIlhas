@@ -39,11 +39,11 @@ namespace CanalIlhas.Controllers
         //const string NmUsuarioMaster;
         //const string NmCasMaster;
 
-        public ContaController(IConfiguration configuration, SignInManager<UsuarioAplicativo> signInManager)
-        {
-            string _PTI = configuration.GetSection("PTI")["PTI"];
-            _signInManager = signInManager;
-        }
+        //public ContaController(IConfiguration configuration, SignInManager<UsuarioAplicativo> signInManager)
+        //{
+        //    string _PTI = configuration.GetSection("PTI")["PTI"];
+        //    _signInManager = signInManager;
+        //}
 
         [HttpGet]
         [AllowAnonymous]
@@ -75,8 +75,8 @@ namespace CanalIlhas.Controllers
                 if (identityUser.Contains("\\"))
                 {
                     ud = identityUser.Split("\\");
-                    DominioNome = ud[0];
-                    UsuarioNome = ud[1];
+                    DominioNome = ud[0] = "BRASILCENTER";
+                    UsuarioNome = ud[1] = "NMARTIN";
                 }
 
                 //model.UsuarioNome;

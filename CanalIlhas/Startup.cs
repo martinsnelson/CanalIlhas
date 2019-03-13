@@ -64,7 +64,11 @@ namespace CanalIlhas
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddCookie();
-            
+
+            //  Nome do cabeçalho padrão do Angular para enviar o token XSRF.
+            services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+
+            services.AddHttpClient();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

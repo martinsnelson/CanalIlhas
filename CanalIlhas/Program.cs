@@ -19,6 +19,10 @@ namespace CanalIlhas
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .UseKestrel(options => 
+                {
+                    options.Limits.MaxRequestBodySize = 314572800; // 600MB
+                });
     }
 }
