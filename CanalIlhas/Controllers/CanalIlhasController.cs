@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -36,6 +38,54 @@ namespace CanalIlhas.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            return View();
+        }
+
+        public JsonResult UploadFile(IList<IFormFile> files)
+        {
+            return Json(new { state = 0, message = string.Empty });
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Upload()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upload(List<IFormFile> files)
+        {
+            long size = files.Sum(f => f.Length);
+            // caminho completo para o arquivo no local temporário
+            /*
+            var t =  Path.GetFileName();
+            var t1 = Path.GetFileNameWithoutExtension();
+            var t2 = Path.GetFileNameWithoutExtension();
+            var t3 = Path.GetFullPath();
+            var t4 = Path.GetFullPath();
+            */
+            var filePath = Path.GetTempFileName();
+
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+            }
+
+            return Ok(new { count = files.Count, size, filePath });
+        }
+
         //var teste = new Test { Aplicacao = "", Login = "" };
 
         //var test = new Test
@@ -44,16 +94,16 @@ namespace CanalIlhas.Controllers
         //     Login = "";
         //};
 
-        [HttpPost]
-        public async Task<ActionResult> Get()
-        {
-            var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri("HTTPS://WASEGURANCA.BRASILCENTER.COM.BR/WASEGURANCA"); ///api/Usuario/ObterUsuarioPorLogin
-            // client.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
-            // client.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
-            string result = await client.PostAsJsonAsync("", Test);
-            return Ok(result);
-        }
+        //[HttpPost]
+        //public async Task<ActionResult> Get()
+        //{
+        //    var client = _httpClientFactory.CreateClient();
+        //    client.BaseAddress = new Uri("HTTPS://WASEGURANCA.BRASILCENTER.COM.BR/WASEGURANCA"); ///api/Usuario/ObterUsuarioPorLogin
+        //    // client.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
+        //    // client.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
+        //    string result = await client.PostAsJsonAsync("", Test);
+        //    return Ok(result);
+        //}
         //// 1. Disable the form value model binding here to take control of handling 
         ////    potentially large files.
         //// 2. Typically antiforgery tokens are sent in request body, but since we 
@@ -163,13 +213,6 @@ namespace CanalIlhas.Controllers
         //    };
         //    return Json(uploadedData);
         //}
-
-        [HttpGet]
-        //[GenerateAntiforgeryTokenCookieForAjax]
-        public IActionResult Index()
-        {
-            return View();
-        }
     }
 
 
