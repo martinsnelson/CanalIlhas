@@ -1,50 +1,92 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml">
+﻿@{
+    ViewData["Title"] = "Upload";
+}
+
+@{
+    Layout = null;
+}
+
 <head>
     <title></title>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
 </head>
 <body>
-    <input type="file" id="file" />
-    <button>upload</button>
+    <fieldset style="display:inline;">
+        <legend>Upload:</legend>
+        <div style="position:relative; width:80%; background:#f0f0f0">
+            <div id="progress" style="display:none; background: blue; height:5%; width:0%"></div>
+        </div>
+        <input type="file" id="file" />
+        <button>Inserir</button>
+        <br />
+        <progress value="0" max="100" id="progress"></progress>
+        <br />
+    </fieldset>
 
-    <div style="position:relative;width:296px;background:#f0f0f0">
-        <div id="progress" style="background: blue; height: 20px;width:0"></div>
-    </div>
+    <br />
 
-    <script>
-        $("button").click(function () {
-            var progressEle = $("#progress");
-            progressEle.css("background", "blue");
+    <fieldset style="display:inline;">
+        <legend>Lista de Arquivos:</legend>
+        <div style="position:relative;">
+            <table>
+                <tr>
+                    <th>Completo</th>
+                    <th>Nome arquivo</th>
+                    <th>Tamanho</th>
+                    <th>Exluir</th>
+                </tr>
+                <!--bind da api-->
+                <tbody id="todos"></tbody>
+            </table>
+        </div>
+    </fieldset>
+            @*<script>
+                var uploadEnum = {
+                    Sucesso: 1,
+                    Falha: 2,
+                    Erro: 3
+                };
 
-            var data = document.getElementById("file").files[0];
+                $("button").click(function () {
+                    var progressEle = $("#progress");
+                    progressEle.css("display", "block").delay("slow");
+                    progressEle.css("background", "#1414bd");                    
 
-            var formData = new FormData();
+                    var data = document.getElementById("file").files[0];
 
-            formData.append("files", data);
+                    var formData = new FormData();
 
-            $.ajax({
-                url: "/CanalIlhas/UploadFile",
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: "POST",
-                xhr: function () {
-                    var xhr = new window.XMLHttpRequest();
-                    xhr.upload.addEventListener("progress", function (evt) {
-                        if (evt.lengthComputable) {
-                            var progress = Math.round((evt.loaded / evt.total) * 100);
-                            progressEle.width(progress + "%");
+                    formData.append("files", data);
+
+                    $.ajax({
+                        url: "/CanalIlhas/UploadFile",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        type: "POST",
+                        xhr: function () {
+                            var xhr = new window.XMLHttpRequest();
+                            xhr.upload.addEventListener("progress", function (evt) {
+                                if (evt.lengthComputable) {
+                                    var progress = Math.round((evt.loaded / evt.total) * 100);
+                                    progressEle.width(progress + "%");
+                                }
+                            }, false);
+                            return xhr;
+                        },
+                        success: function (data) {
+                            if (data.state == 1) {
+                                //progressEle.css("background", "green").slideUp(200).delay(2000).fadeIn(400);
+                                progressEle.css("background", "#02a02c").delay("slow");
+                                //progressEle.css("display", "none").slideUp(200).delay(2000).fadeIn(400);
+                            }
+                            else
+                            {
+                                progressEle.css("background", "#ff0000").delay("slow");
+                                progressEle.css("display", "none")
+                            }
                         }
-                    }, false);
-                    return xhr;
-                },
-                success: function (data) {
-                    if (data.state == 0) {
-                        progressEle.css("background", "green");
-                    }
-                }
-            });
-        });
-    </script>
+                    });
+                });
+            </script>*@
 </body>
-</html>

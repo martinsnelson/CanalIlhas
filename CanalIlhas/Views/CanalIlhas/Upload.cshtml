@@ -3,18 +3,109 @@
     ViewData["Title"] = "Upload";
 }
 
+<script src="~/js/jquery-progress-upload.js"></script>
+<script>
+    var settings = {};
+    $('#file').setProgressedUploader(settings);
+</script>
+
 <h2>Upload</h2>
 
-<form method="post" enctype="multipart/form-data" asp-controller="CanalIlhas" asp-action="Upload">
-    <div class="form-group">
-        <div class="col-md-10">
-            <p>Upload one or more files using this form:</p>
-            <input type="file" name="files" multiple />
+@*@using (Ajax.BeginForm("Index", "Home", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-md-2">
+            <h5>Your Name:</h5>
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="uname" class="form-control" required placeholder="John Smith">
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-md-10">
-            <input type="submit" value="Upload" />
+    <div class="row">
+        <div class="col-md-2">
+            <h5>Your Email:</h5>
+        </div>
+        <div class="col-md-4">
+            <input type="email" name="email" class="form-control" required placeholder="test@test.com">
         </div>
     </div>
-</form>
+    <div class="row">
+        <div class="col-md-2">
+            <h5>Your Company:</h5>
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="company" class="form-control" required placeholder="Test Company, Inc">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <h5>Choose file(s) to upload (Max 500MB):</h5>
+        </div>
+        <div class="col-md-4">
+            <input name="files" type="file" id="files" multiple="multiple" class="form-control" required />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <h5></h5>
+        </div>
+        <div class="col-md-4">
+            <input id="sbmtBtn" type="submit" name="submit" value="Upload" class="btn btn-primary" />
+        </div>
+    </div>
+}*@
+
+<br />
+<div class="progress">
+    <div class="progress-bar">0%</div>
+</div>
+
+<div id="status"></div>
+
+<script>
+    (function () {
+        var bar = $('.progress-bar');
+        var percent = $('.progress-bar');
+        var status = $('#status');
+
+        $('form').ajaxForm({
+            beforeSend: function () {
+                status.empty();
+                status.html("Please Wait While We Upload Your File(s)");
+                var percentValue = '0%';
+                bar.width(percentValue);
+                percent.html(percentValue);
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+                var percentValue = percentComplete + '%';
+                bar.width(percentValue);
+                percent.html(percentValue);
+            },
+            success: function (d) {
+                var percentValue = '100%';
+                bar.width(percentValue);
+                percent.html(percentValue);
+                $('#fu1').val('');
+                status.empty();
+                alert(d);
+            },
+            complete: function (xhr) {
+                status.html("You can Upload again or close this page.");
+            }
+        });
+    })();
+</script>
+
+@*<form method="post" enctype="multipart/form-data" asp-controller="CanalIlhas" asp-action="Upload">
+        <div class="form-group">
+            <div class="col-md-10">
+                <p>Upload one or more files using this form:</p>
+                <input type="file" name="files" multiple />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="Upload" />
+            </div>
+        </div>
+    </form>*@

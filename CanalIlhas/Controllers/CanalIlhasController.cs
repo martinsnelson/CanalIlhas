@@ -44,8 +44,22 @@ namespace CanalIlhas.Controllers
             return View();
         }
 
-        public JsonResult UploadFile(IList<IFormFile> files)
+        [HttpGet]
+        public IActionResult UploadArquivo()
         {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        [RequestSizeLimit(314572800)]// 300MB
+        public JsonResult UploadArquivo(IList<IFormFile> files)
+        {
+            if (files.Count > 0)
+            {
+                return Json(new { state = 1, message = "Enviado com sucesso!" });
+            }
             return Json(new { state = 0, message = string.Empty });
         }
 
@@ -59,6 +73,7 @@ namespace CanalIlhas.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [RequestSizeLimit(314572800)]// 300MB
         public async Task<IActionResult> Upload(List<IFormFile> files)
         {
             long size = files.Sum(f => f.Length);

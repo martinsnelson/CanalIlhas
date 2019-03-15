@@ -20,6 +20,8 @@ namespace CanalIlhas
             Configuration = configuration;
         }
 
+        public static int Progress { get; set; }
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -71,11 +73,11 @@ namespace CanalIlhas
 
             services.AddHttpClient();
 
-            services.Configure<FormOptions>(x =>
-            {
-                x.ValueLengthLimit = int.MaxValue;
-                x.MultipartBodyLengthLimit = int.MaxValue;
-            });
+            //services.Configure<FormOptions>(x =>
+            //{
+            //    x.ValueLengthLimit = int.MaxValue;
+            //    x.MultipartBodyLengthLimit = int.MaxValue;
+            //});
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
