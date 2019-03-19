@@ -38,6 +38,9 @@ namespace CanalIlhas
             //    options.Cookie.HttpOnly = true;
             //});
 
+            // WebApi Chamada
+            services.Configure<ConfigsModel>(Configuration.GetSection("MySettings"));
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 

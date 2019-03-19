@@ -37,23 +37,23 @@ namespace CanalIlhas.Controllers
 
                 foreach (IFormFile source in files)
                 {
-                    string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.ToString().Trim('"');
+                    string arquivoNome = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.ToString().Trim('"');
 
-                    filename = this.EnsureCorrectFilename(filename);
+                    arquivoNome = this.AsseguraNomeCorretoArquivo(arquivoNome);
 
                     byte[] buffer = new byte[16 * 1024];
 
-                    using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename)))
+                    using (FileStream output = System.IO.File.Create(this.ObterCaminhoNomeArquivo(arquivoNome)))
                     {
                         using (Stream input = source.OpenReadStream())
                         {
-                            long totalReadBytes = 0;
-                            int readBytes;
+                            long totalLerBytes = 0;
+                            int lerBytes;
 
-                            while ((readBytes = input.Read(buffer, 0, buffer.Length)) > 0)
+                            while ((lerBytes = input.Read(buffer, 0, buffer.Length)) > 0)
                             {
-                                await output.WriteAsync(buffer, 0, readBytes);
-                                totalReadBytes += readBytes;
+                                await output.WriteAsync(buffer, 0, lerBytes);
+                                totalLerBytes += lerBytes;
                                 // Startup.Progress = (int)((float)totalReadBytes / (float)totalBytes * 100.0);
                                 await Task.Delay(10); // It is only to make the process slower
                             }
@@ -72,22 +72,22 @@ namespace CanalIlhas.Controllers
         //    return this.Content(Startup.Progress.ToString());
         //}
 
-        private string EnsureCorrectFilename(string filename)
+        private string AsseguraNomeCorretoArquivo(string arquivoNome)
         {
-            if (filename.Contains("\\"))
-                filename = filename.Substring(filename.LastIndexOf("\\") + 1);
+            if (arquivoNome.Contains("\\"))
+                arquivoNome = arquivoNome.Substring(arquivoNome.LastIndexOf("\\") + 1);
 
-            return filename;
+            return arquivoNome;
         }
 
-        private string GetPathAndFilename(string filename)
+        private string ObterCaminhoNomeArquivo(string arquivoNome)
         {
-            string path = this._hostingEnvironment.WebRootPath + "\\uploads\\";
+            string caminho = this._hostingEnvironment.WebRootPath + "\\uploads\\";
 
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            if (!Directory.Exists(caminho))
+                Directory.CreateDirectory(caminho);
 
-            return path + filename;
+            return caminho + arquivoNome;
         }
     }
 }

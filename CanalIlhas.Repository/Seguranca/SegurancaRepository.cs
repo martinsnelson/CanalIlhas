@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Seguranca.DTO.Request;
 using Seguranca.DTO.Response;
 using Seguranca.ServiceAgent;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace CanalIlhas.Repository.Seguranca
@@ -25,21 +27,50 @@ namespace CanalIlhas.Repository.Seguranca
         //    _aplicacaoNome = configuration.GetSection("APLICACAO")["NOME"];
         //}
 
+        public void OnGet([FromServices]IConfiguration config)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                string baseURL = config.GetSection("MySettings:WebApiBaseUrl").Value;
+                HttpResponseMessage response = client.GetAsync(
+                baseURL + "User/GetAllUsers").Result;
+                response.EnsureSuccessStatusCode();
+                string conteudo = response.Content.ReadAsStringAsync().Result;
+                dynamic resultado = JsonConvert.DeserializeObject(conteudo);
+            }
+        }
+
+
+        public ObterUsuarioResponse GetUserByLogin(string pUsername)
+        {
+            try
+            {
+                return new UsuarioServiceAgent().ObterUsuarioPorLogin(new ObterUsuarioPorLoginRequest { Aplicacao = AplicacaoNomeTeste, Login = pUsername });
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+                //   throw new Exception(SecurityMessages.GET_USER_BY_LOGIN);
+            }
+        }
+
+
+        //Usuario/ObterUsuarioPorLogin
+        //public async Task<List<UsersModel>> GetUsers()
+        //{
+        //    var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture, 
+        //        "User/GetAllUsers"));
+        //    return await GetAsync<List<UsersModel>>(requestUrl);
+        //}
+
 
         public ObterUsuarioResponse ObterUsuarioPorLogin(string pUsuarioNome)
         {
             try
             {
-                pUsuarioNome = "NMARTIN";
-                var serializer = JsonConvert.SerializeObject(pUsuarioNome);
-
-                //var streamTask = client.GetStreamAsync("HTTPS://WASEGURANCA.BRASILCENTER.COM.BR/WASEGURANCA");
-
-                //var result = client.GetAsync(_waSegurancat).Result;
-                //if (result.IsSuccessStatusCode) { }
-
-                return new UsuarioServiceAgent().ObterUsuarioPorLogin(new ObterUsuarioPorLoginRequest { Aplicacao = AplicacaoNomeTeste, Login = serializer });
-                //throw new NotImplementedException();
+                return new UsuarioServiceAgent().ObterUsuarioPorLogin(new ObterUsuarioPorLoginRequest { Aplicacao = AplicacaoNomeTeste, Login = pUsuarioNome });
             }
             catch (Exception e)
             {

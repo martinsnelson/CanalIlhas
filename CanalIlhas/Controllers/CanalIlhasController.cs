@@ -3,47 +3,79 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using CanalIlhas.Factory;
+using CanalIlhas.Models;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 
 namespace CanalIlhas.Controllers
 {
-    public class JsonContent : StringContent
-    {
-        public JsonContent(object obj, object ob) :
-            base(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json")
-        { }
-    }
+    //public class JsonContent : StringContent
+    //{
+    //    public JsonContent(object obj, object ob) :
+    //        base(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json")
+    //    { }
+    //}
 
-    public class Test
-    {
-        public string Aplicacao { get; set; }
-        public string Login { get; set; }
-    }
+    //public class Test
+    //{
+    //    public string Aplicacao { get; set; }
+    //    public string Login { get; set; }
+    //}
 
     public class CanalIlhasController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        //private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IOptions<ConfigsModel> _configsModel;
+        string usuarioNome = "NMARTIN";
 
-        public CanalIlhasController(IHttpClientFactory httpClientFactory)
+        //public CanalIlhasController(IHttpClientFactory httpClientFactory){ _httpClientFactory = httpClientFactory; }
+        public CanalIlhasController(IOptions<ConfigsModel> configsModel)
         {
-            _httpClientFactory = httpClientFactory;
+            _configsModel = configsModel;
+            AplicacaoConfig.WebApiUrl = _configsModel.Value.WebApiBaseUrl;
+
+        }
+
+
+        public void OnGet([FromServices]IConfiguration config)
+        {
+            string Aplicacao = "LOTUS";
+            string login = "NMARTIN";
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                string baseURL = config.GetSection("WASEGURANCA:WASEGURANCA").Value;
+                HttpResponseMessage response = client.GetAsync(
+                baseURL + "Usuario/ObterUsuarioPorLogin/?" +
+                                                      $"Aplicacao={Aplicacao}&" + 
+                                                      $"Login={login}").Result;
+                response.EnsureSuccessStatusCode();
+                string conteudo = response.Content.ReadAsStringAsync().Result;
+                dynamic resultado = JsonConvert.DeserializeObject(conteudo);
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            //var dados = await ApiClienteFactory.Instance.GetUsers();
             return View();
         }
 
+        /*
         [HttpGet]
         public IActionResult UploadArquivo()
         {
@@ -85,22 +117,23 @@ namespace CanalIlhas.Controllers
             var t3 = Path.GetFullPath();
             var t4 = Path.GetFullPath();
             */
-            var filePath = Path.GetTempFileName();
+        /*
+        var filePath = Path.GetTempFileName();
 
-            foreach (var formFile in files)
+        foreach (var formFile in files)
+        {
+            if (formFile.Length > 0)
             {
-                if (formFile.Length > 0)
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await formFile.CopyToAsync(stream);
-                    }
+                    await formFile.CopyToAsync(stream);
                 }
             }
-
-            return Ok(new { count = files.Count, size, filePath });
         }
 
+        return Ok(new { count = files.Count, size, filePath });
+    }
+    */
         //var teste = new Test { Aplicacao = "", Login = "" };
 
         //var test = new Test
@@ -228,39 +261,37 @@ namespace CanalIlhas.Controllers
         //    };
         //    return Json(uploadedData);
         //}
+
+        //public class GenerateAntiforgeryTokenCookieForAjaxAttribute : ActionFilterAttribute
+        //{
+        //    public override void OnActionExecuted(ActionExecutedContext context)
+        //    {
+        //        var antiforgery = context.HttpContext.RequestServices.GetService<IAntiforgery>();
+
+        //        // We can send the request token as a JavaScript-readable cookie, 
+        //        // and Angular will use it by default.
+        //        var tokens = antiforgery.GetAndStoreTokens(context.HttpContext);
+        //        context.HttpContext.Response.Cookies.Append(
+        //            "XSRF-TOKEN",
+        //            tokens.RequestToken,
+        //            new CookieOptions() { HttpOnly = false });
+        //    }
+        //}
+
+        //[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+        //public class DisableFormValueModelBindingAttribute : Attribute, IResourceFilter
+        //{
+        //    public void OnResourceExecuting(ResourceExecutingContext context)
+        //    {
+        //        var factories = context.ValueProviderFactories;
+        //        factories.RemoveType<FormValueProviderFactory>();
+        //        factories.RemoveType<JQueryFormValueProviderFactory>();
+        //    }
+
+        //    public void OnResourceExecuted(ResourceExecutedContext context)
+        //    {
+        //    }
+
+        //}
     }
-
-
-    //public class GenerateAntiforgeryTokenCookieForAjaxAttribute : ActionFilterAttribute
-    //{
-    //    public override void OnActionExecuted(ActionExecutedContext context)
-    //    {
-    //        var antiforgery = context.HttpContext.RequestServices.GetService<IAntiforgery>();
-
-    //        // We can send the request token as a JavaScript-readable cookie, 
-    //        // and Angular will use it by default.
-    //        var tokens = antiforgery.GetAndStoreTokens(context.HttpContext);
-    //        context.HttpContext.Response.Cookies.Append(
-    //            "XSRF-TOKEN",
-    //            tokens.RequestToken,
-    //            new CookieOptions() { HttpOnly = false });
-    //    }
-    //}
-
-    //[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    //public class DisableFormValueModelBindingAttribute : Attribute, IResourceFilter
-    //{
-    //    public void OnResourceExecuting(ResourceExecutingContext context)
-    //    {
-    //        var factories = context.ValueProviderFactories;
-    //        factories.RemoveType<FormValueProviderFactory>();
-    //        factories.RemoveType<JQueryFormValueProviderFactory>();
-    //    }
-
-    //    public void OnResourceExecuted(ResourceExecutedContext context)
-    //    {
-    //    }
-        
-    //}
-
 }
