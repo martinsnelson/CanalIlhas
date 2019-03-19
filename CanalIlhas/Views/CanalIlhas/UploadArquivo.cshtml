@@ -2,32 +2,35 @@
 @{
     ViewData["Title"] = "Upload de Arquivos";
 }
-
 <div class="container">
-    <h2>Upload de Arquivos</h2>
-    <fieldset style="display:inline;">
-        @*<legend>Upload:</legend>*@
-        <div style="position:relative; width:80%; background:#f0f0f0">
-            <div id="progress" style="display:none; background: blue; height:1%; width:1%"></div>
-        </div>
-        <div class="control-fileupload">
-            <label class="custom-file-label">Escolher arquivo</label>
-            <a href="#" data-toggle="popover" title="Upload Ajuda!" data-content="Formatos permitidos: WVM, MP4, MPEG-4, AVI, JPG, JPEG, PNG, GIF, BMP, PPS e PDF">Dúvida ?</a>
-            <input class="form-group has-success has-feedback" type="file" id="file" />
-        </div>
-        <button type="button" class="btn btn-info">Inserir</button>
-    </fieldset>
+    <form>
+        <h2>Upload de Arquivos</h2>
+        <fieldset style="display:inline;">
+            @*<legend>Upload:</legend>*@
+
+            @Html.AntiForgeryToken()
+            <div style="position:relative; width:80%; background:#f0f0f0">
+                <div id="progress" style="display:none; background: blue; height:1%; width:1%"></div>
+            </div>
+            <div class="control-fileupload">
+                <label class="custom-file-label">Escolher arquivo</label>
+                <a href="#" data-toggle="popover" title="Upload Ajuda!" data-content="Formatos permitidos: WVM, MP4, MPEG-4, AVI, JPG, JPEG, PNG, GIF, BMP, PPS e PDF">Dúvida ?</a>
+                <input class="form-group has-success has-feedback" type="file" id="file" />
+            </div>
+            <button type="button" class="btn btn-info">Inserir</button>
+        </fieldset>
+    </form>
 </div>
 
 @*
 
 *@
 
-<h1>Let’s Upload Something!</h1>
+<h1>Vamos enviar algo!</h1>
 <form id="form" name="form" action="/upload" enctype="multipart/form-data" method="post">
     <div class="buttons">
         <div class="upload-button">
-            <div class="label">Click me!</div>
+            <div class="label">Clique aqui!</div>
             <input id="files" name="files" type="file" size="1" multiple onchange="uploadFiles('files');" />
         </div>
     </div>

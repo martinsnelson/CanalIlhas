@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewData["Title"] = "Upload de Arquivos";
+}
+<script>
+
+        //var myVar;
+
+        ////var i = 0;
+
+        //function myFunction() {
+        //    myVar = setInterval(function { showPage() }, 0 );
+        //}
+
+        //function showPage() {
+        //    //document.getElementById("loader").innerHTML += i++;
+        //    document.getElementById("loader").style.display = "none";
+        //    document.getElementById("myDiv").style.display = "block";
+        //}
+</script>
+<link href="~/css/aspnetcorefileuploading.css" rel="stylesheet" />
+<link href="~/css/carregar.css" rel="stylesheet" />
+
+@*<h1>Let’s Upload Something!</h1>
+    <form id="form" name="form" action="/uploader" enctype="multipart/form-data" method="post">
+        <div class="buttons">
+            <div class="upload-button">
+                <div class="label">Click me!</div>
+                <input id="files" name="files" type="file" size="1" multiple onchange="uploadFiles('files');" />
+            </div>
+        </div>
+    </form>
+    <div id="progress" class="progress"><div id="bar" class="bar"></div><div id="label" class="label">0%</div></div>*@
+
+
+<div id="loader"></div>
+<div class="conteudo">
+    <h2>Vamos enviar algo!</h2>
+    @*<form id="form" name="form" action="/upload" enctype="multipart/form-data" method="post">
+            <div class="buttons">
+                <div class="upload-button">
+                    <div class="label">Clique aqui!</div>
+                    <input id="files" name="files" type="file" size="1" multiple onchange="uploadFiles('files');" />
+                </div>
+            </div>
+        </form>*@
+    <label class="custom-file-label">Aguarde a mensagem de enviado com sucesso!</label>
+    <div style="position:relative; width: 50%; background:#f0f0f0; ">
+        <div id="progress" style="background: blue; height: 20px;width:0"></div>
+    </div>
+    @*<div style="position:relative;width:296px;background:#f0f0f0">
+            <div id="progress" style="background: blue; height: 20px;width:0" class="progress">
+                <div id="bar" class="bar"></div>
+                <div id="label" class="label">0</div>
+            </div>
+        </div>*@
+
+
+
+    <div class="container">
+        <form>
+            @*<h2>Upload de Arquivos</h2>*@
+            <fieldset style="display:inline;">
+                @*<legend>Upload:</legend>*@
+
+                @*@Html.AntiForgeryToken()*@
+                <div style="position:relative; width:80%; background:#f0f0f0">
+                    <div id="progress" style="/*display:none;*/"></div>
+                </div>
+                <div class="control-fileupload">
+                    <a href="#" style="margin-left: 30%;" data-toggle="popover" title="Upload Ajuda!" data-content="Formatos permitidos: WVM, MP4, MPEG-4, AVI, JPG, JPEG, PNG, GIF, BMP, PPS e PDF">Dúvida ?</a>
+                    <input class="form-group has-success has-feedback" type="file" id="file" />
+                </div>
+                <button id="inserir" style="margin-left: 90%;" type="button" class="btn btn-primary btn-lg">Inserir</button>
+            </fieldset>
+        </form>
+    </div>
+</div>
+    <hr>
+    <br />
+
+    <div class="container">
+        <h2>Lista de Arquivos:</h2>
+        <fieldset style="display:inline;">
+            @*<legend>Lista de Arquivos:</legend>*@
+            @*<p>Descrição para a tabela:</p>*@
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Completo</th>
+                        <th>Nome arquivo</th>
+                        <th>Tamanho</th>
+                        <th>Exluir</th>
+                    </tr>
+                </thead>
+                <!--bind da api-->
+                <tbody id="todos"></tbody>
+            </table>
+            @*</div>*@
+        </fieldset>
+    </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/uploadarquivos.js"></script>
