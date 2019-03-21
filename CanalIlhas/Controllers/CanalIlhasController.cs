@@ -68,6 +68,25 @@ namespace CanalIlhas.Controllers
             }
         }
 
+        public void OnGet2([FromServices]IConfiguration config)
+        {
+            string Aplicacao = "LOTUS";
+            string login = "NMARTIN";
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                string baseURL = config.GetSection("CanalIlhas:WebApi").Value;
+                HttpResponseMessage response = client.GetAsync(
+                baseURL + "CanalIlhas/?" +
+                                                      $"t1={Aplicacao}&" +
+                                                      $"t2={login}").Result;
+                response.EnsureSuccessStatusCode();
+                string conteudo = response.Content.ReadAsStringAsync().Result;
+                dynamic resultado = JsonConvert.DeserializeObject(conteudo);
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
