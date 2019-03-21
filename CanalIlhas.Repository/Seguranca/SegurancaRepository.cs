@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Seguranca.DTO.Request;
-using Seguranca.DTO.Response;
-using Seguranca.ServiceAgent;
+//using Seguranca.DTO.Request;
+//using Seguranca.DTO.Response;
+//using Seguranca.ServiceAgent;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -42,21 +42,6 @@ namespace CanalIlhas.Repository.Seguranca
             }
         }
 
-
-        public ObterUsuarioResponse GetUserByLogin(string pUsername)
-        {
-            try
-            {
-                return new UsuarioServiceAgent().ObterUsuarioPorLogin(new ObterUsuarioPorLoginRequest { Aplicacao = AplicacaoNomeTeste, Login = pUsername });
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-                //   throw new Exception(SecurityMessages.GET_USER_BY_LOGIN);
-            }
-        }
-
-
         //Usuario/ObterUsuarioPorLogin
         //public async Task<List<UsersModel>> GetUsers()
         //{
@@ -65,58 +50,70 @@ namespace CanalIlhas.Repository.Seguranca
         //    return await GetAsync<List<UsersModel>>(requestUrl);
         //}
 
+        //public ObterUsuarioResponse GetUserByLogin(string pUsername)
+        //{
+        //    try
+        //    {
+        //        return new UsuarioServiceAgent().ObterUsuarioPorLogin(new ObterUsuarioPorLoginRequest { Aplicacao = AplicacaoNomeTeste, Login = pUsername });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(e.Message);
+        //        //   throw new Exception(SecurityMessages.GET_USER_BY_LOGIN);
+        //    }
+        //}
 
-        public ObterUsuarioResponse ObterUsuarioPorLogin(string pUsuarioNome)
-        {
-            try
-            {
-                return new UsuarioServiceAgent().ObterUsuarioPorLogin(new ObterUsuarioPorLoginRequest { Aplicacao = AplicacaoNomeTeste, Login = pUsuarioNome });
-            }
-            catch (Exception e)
-            {
+        //public ObterUsuarioResponse ObterUsuarioPorLogin(string pUsuarioNome)
+        //{
+        //    try
+        //    {
+        //        return new UsuarioServiceAgent().ObterUsuarioPorLogin(new ObterUsuarioPorLoginRequest { Aplicacao = AplicacaoNomeTeste, Login = pUsuarioNome });
+        //    }
+        //    catch (Exception e)
+        //    {
 
-                throw new Exception(e.Message);
-            }
-        }
+        //        throw new Exception(e.Message);
+        //    }
+        //}
 
-        public AutenticarResponse Autenticar(int pCadastro, string pSenha)
-        {
+        //public AutenticarResponse Autenticar(int pCadastro, string pSenha)
+        //{
 
-            try
-            {
-                return new UsuarioServiceAgent().Autenticar(new AutenticarRequest { Aplicacao = _aplicacaoNome, Senha = pSenha });
-            }
-            catch (Exception e)
-            {
+        //    try
+        //    {
+        //        return new UsuarioServiceAgent().Autenticar(new AutenticarRequest { Aplicacao = _aplicacaoNome, Senha = pSenha });
+        //    }
+        //    catch (Exception e)
+        //    {
 
-                throw new Exception(e.Message);
-            }
-        }
+        //        throw new Exception(e.Message);
+        //    }
+        //}
 
-        public ObterUsuarioResponse ObterUsuarioPorMatricula(int pMatricula)
-        {
-            try
-            {
-                return new UsuarioServiceAgent().ObterUsuarioPorMatricula(new ObterUsuarioPorMatriculaRequest { Aplicacao = _aplicacaoNome, Matricula = pMatricula});
-            }
-            catch (Exception e)
-            {
+        //public ObterUsuarioResponse ObterUsuarioPorMatricula(int pMatricula)
+        //{
+        //    try
+        //    {
+        //        return new UsuarioServiceAgent().ObterUsuarioPorMatricula(new ObterUsuarioPorMatriculaRequest { Aplicacao = _aplicacaoNome, Matricula = pMatricula});
+        //    }
+        //    catch (Exception e)
+        //    {
 
-                throw new Exception(e.Message);
-            }
-        }
+        //        throw new Exception(e.Message);
+        //    }
+        //}
 
-        public bool ValidarCredenciais(ValidateCredentialsRequest pValidarPedidoCredenciais)
-        {
-            try
-            {
-                return new UsuarioServiceAgent().ValidateCredentials(pValidarPedidoCredenciais).Sucesso;
-            }
-            catch (Exception e)
-            {
+        //public bool ValidarCredenciais(ValidateCredentialsRequest pValidarPedidoCredenciais)
+        //{
+        //    try
+        //    {
+        //        return new UsuarioServiceAgent().ValidateCredentials(pValidarPedidoCredenciais).Sucesso;
+        //    }
+        //    catch (Exception e)
+        //    {
 
-                throw new Exception(e.Message);
-            }
-        }
+        //        throw new Exception(e.Message);
+        //    }
+        //}
     }
 }

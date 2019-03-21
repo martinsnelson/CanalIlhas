@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Seguranca.DTO;
-using Seguranca.DTO.Request;
-using Seguranca.DTO.Response;
+//using Seguranca.DTO;
+//using Seguranca.DTO.Request;
+//using Seguranca.DTO.Response;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
@@ -56,93 +56,93 @@ namespace CanalIlhas.Controllers
             return View();
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> OnPostAsync(ContaViewModel model)
-        {
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> OnPostAsync(ContaViewModel model)
+        //{
 
-            if (ModelState.IsValid)
-            {
-                var isValid = true; // TODO Validate the username and the password with your own logic
-                if (!isValid)
-                {
-                    ModelState.AddModelError("", "username or password is invalid");
-                    return View("Login", model);
-                }
+        //    if (ModelState.IsValid)
+        //    {
+        //        var isValid = true; // TODO Validate the username and the password with your own logic
+        //        if (!isValid)
+        //        {
+        //            ModelState.AddModelError("", "username or password is invalid");
+        //            return View("Login", model);
+        //        }
 
-                identityUser = model.UsuarioNome.ToUpper().Trim();
-                if (identityUser.Contains("\\"))
-                {
-                    ud = identityUser.Split("\\");
-                    DominioNome = ud[0] = "BRASILCENTER";
-                    UsuarioNome = ud[1] = "NMARTIN";
-                }
+        //        identityUser = model.UsuarioNome.ToUpper().Trim();
+        //        if (identityUser.Contains("\\"))
+        //        {
+        //            ud = identityUser.Split("\\");
+        //            DominioNome = ud[0] = "BRASILCENTER";
+        //            UsuarioNome = ud[1] = "NMARTIN";
+        //        }
 
-                //model.UsuarioNome;
-                var logado = new SegurancaRepository().ObterUsuarioPorLogin(UsuarioNome);
-                if (logado.Sucesso)
-                {
-                    var claimsLogin = new ClaimsIdentity();
-                    var claims = new List<Claim>();
-                    var principal = new ClaimsPrincipal();
+        //        //model.UsuarioNome;
+        //        var logado = new SegurancaRepository().ObterUsuarioPorLogin(UsuarioNome);
+        //        if (logado.Sucesso)
+        //        {
+        //            var claimsLogin = new ClaimsIdentity();
+        //            var claims = new List<Claim>();
+        //            var principal = new ClaimsPrincipal();
 
-                    var ClaimsPerfil = from form in logado.Usuario.Perfis.Select(a => a.TxPerfil) select new Claim("Perfil", form);
-                    if (ClaimsPerfil.Select(a => a.Value).Contains(_PTI))
-                    {
-                        claimsLogin = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
+        //            var ClaimsPerfil = from form in logado.Usuario.Perfis.Select(a => a.TxPerfil) select new Claim("Perfil", form);
+        //            if (ClaimsPerfil.Select(a => a.Value).Contains(_PTI))
+        //            {
+        //                claimsLogin = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
 
-                        claimsLogin.AddClaim(new Claim("UsuarioMaster", logado.Usuario.Nome));
-                        claimsLogin.AddClaim(new Claim("NmUsuarioMaster", logado.Usuario.Matricula.ToString()));
-                        claimsLogin.AddClaim(new Claim("NmCasMaster", logado.Usuario.Cas));
+        //                claimsLogin.AddClaim(new Claim("UsuarioMaster", logado.Usuario.Nome));
+        //                claimsLogin.AddClaim(new Claim("NmUsuarioMaster", logado.Usuario.Matricula.ToString()));
+        //                claimsLogin.AddClaim(new Claim("NmCasMaster", logado.Usuario.Cas));
 
-                        principal = new ClaimsPrincipal(claimsLogin);
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties { IsPersistent = false });
+        //                principal = new ClaimsPrincipal(claimsLogin);
+        //                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties { IsPersistent = false });
 
-                        return RedirectToAction(nameof(ContaController.Login));
-                    }
-                    else
-                    {                                             
-                        claims.Add(new Claim(ClaimTypes.Name, logado.Usuario.Nome));
-                        claims.Add(new Claim("NomeUser", logado.Usuario.Nome));
-                        claims.Add(new Claim("MatrUser", logado.Usuario.Matricula.ToString()));
-                        claims.Add(new Claim("CasUser", logado.Usuario.Cas));
-                        claims.Add(new Claim("IdCasUser", logado.Usuario.IdCas.ToString()));
-                        claims.Add(new Claim("UserName", logado.Usuario.Login));
-                        claims.Add(new Claim("UserNameSup", logado.Usuario.LoginSupervisor));
-                        claims.Add(new Claim("NomeSup", logado.Usuario.NomeSupervisor));
-                        claims.Add(new Claim("DtAdmissao", logado.Usuario.DataAdmissao.ToShortDateString()));
-                        claims.Add(new Claim("Cargo", logado.Usuario.Cargo));
-                        claims.Add(new Claim("MatrUserTicket", logado.Usuario.Matricula.ToString()));
-                        claims.Add(new Claim("NmUserTicket", logado.Usuario.Nome.ToString()));
-                        claims.Add(new Claim("NmCasTicket", logado.Usuario.Cas));
-                        // You can add roles to use role-based authorization
-                        // identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
-                        // Authenticate using the identity
-                        claims.AddRange(ClaimsPerfil);
+        //                return RedirectToAction(nameof(ContaController.Login));
+        //            }
+        //            else
+        //            {                                             
+        //                claims.Add(new Claim(ClaimTypes.Name, logado.Usuario.Nome));
+        //                claims.Add(new Claim("NomeUser", logado.Usuario.Nome));
+        //                claims.Add(new Claim("MatrUser", logado.Usuario.Matricula.ToString()));
+        //                claims.Add(new Claim("CasUser", logado.Usuario.Cas));
+        //                claims.Add(new Claim("IdCasUser", logado.Usuario.IdCas.ToString()));
+        //                claims.Add(new Claim("UserName", logado.Usuario.Login));
+        //                claims.Add(new Claim("UserNameSup", logado.Usuario.LoginSupervisor));
+        //                claims.Add(new Claim("NomeSup", logado.Usuario.NomeSupervisor));
+        //                claims.Add(new Claim("DtAdmissao", logado.Usuario.DataAdmissao.ToShortDateString()));
+        //                claims.Add(new Claim("Cargo", logado.Usuario.Cargo));
+        //                claims.Add(new Claim("MatrUserTicket", logado.Usuario.Matricula.ToString()));
+        //                claims.Add(new Claim("NmUserTicket", logado.Usuario.Nome.ToString()));
+        //                claims.Add(new Claim("NmCasTicket", logado.Usuario.Cas));
+        //                // You can add roles to use role-based authorization
+        //                // identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
+        //                // Authenticate using the identity
+        //                claims.AddRange(ClaimsPerfil);
 
-                        var ClaimsForm = from form in logado.Usuario.Permissoes.Select(a => a.Form).Distinct() select new Claim("Form", form);
-                        claims.AddRange(ClaimsForm);
+        //                var ClaimsForm = from form in logado.Usuario.Permissoes.Select(a => a.Form).Distinct() select new Claim("Form", form);
+        //                claims.AddRange(ClaimsForm);
 
-                        var ClaimsRole = from role in logado.Usuario.Permissoes.Select(a => a.Seg).Distinct() select new Claim(ClaimTypes.Role, role);
-                        claims.AddRange(ClaimsRole);
+        //                var ClaimsRole = from role in logado.Usuario.Permissoes.Select(a => a.Seg).Distinct() select new Claim(ClaimTypes.Role, role);
+        //                claims.AddRange(ClaimsRole);
 
-                        List<string> lstForm = logado.Usuario.Permissoes.OrderBy(a => a.Form).OrderBy(a => a.TxFormulario).Select(a => a.Form).AsEnumerable().Distinct().ToList();
-                        List<string> lstTxForm = logado.Usuario.Permissoes.OrderBy(a => a.Form).OrderBy(a => a.TxFormulario).Select(a => a.TxFormulario).AsEnumerable().Distinct().ToList();
+        //                List<string> lstForm = logado.Usuario.Permissoes.OrderBy(a => a.Form).OrderBy(a => a.TxFormulario).Select(a => a.Form).AsEnumerable().Distinct().ToList();
+        //                List<string> lstTxForm = logado.Usuario.Permissoes.OrderBy(a => a.Form).OrderBy(a => a.TxFormulario).Select(a => a.TxFormulario).AsEnumerable().Distinct().ToList();
 
-                        claims.Add(new Claim("Menu", Menu(lstForm, lstTxForm, false)));
+        //                claims.Add(new Claim("Menu", Menu(lstForm, lstTxForm, false)));
 
-                        claimsLogin = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                        principal = new ClaimsPrincipal(claimsLogin);
+        //                claimsLogin = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        //                principal = new ClaimsPrincipal(claimsLogin);
 
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties { IsPersistent = false });
-                    }
-                }
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
+        //                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties { IsPersistent = false });
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(HomeController.Index), "Home");
+        //    }
 
-            return RedirectToAction(nameof(HomeController.Index), "Home");
-        }
+        //    return RedirectToAction(nameof(HomeController.Index), "Home");
+        //}
 
         protected string Menu(List<string> vForm, List<string> vTextForm, bool perfilTI)
         {
@@ -385,131 +385,131 @@ namespace CanalIlhas.Controllers
             }
         }
 
-        [AllowAnonymous]
-        public IActionResult Conta()
-        {
-            try
-            {
-                identityUser = HttpContext.User.Identity.Name.ToUpper().Trim();
-                if (identityUser.Contains("\\"))
-                {
-                    ud = identityUser.Split("\\");
-                    DominioNome = ud[0];
-                    UsuarioNome = ud[1];
-                }
-                else if (!string.IsNullOrEmpty(UsuarioNome))
-                {
-                    _dominioContext = new PrincipalContext(ContextType.Domain, DominioNome);
-                    _encontradoUsuario = UserPrincipal.FindByIdentity(_dominioContext, IdentityType.SamAccountName, UsuarioNome);
-                    if (_encontradoUsuario != null) { validado = true; }
-                    else if (!_SERVERS.Contains(DominioNome.ToUpper()) || !validado) { return View(); }
-                    else
-                    {
-                        try
-                        {
-                            var logado = new SegurancaRepository().ObterUsuarioPorLogin(UsuarioNome);
-                            if (logado.Sucesso)
-                            {
-                                //FormsAuthentication
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            ModelState.AddModelError("Error_Authentic", "Ocorreu erro inesperado.Tente mais tarde");
-                            return View();
-                        }
-                    }
-                }
-                else
-                {
-                    return View();
-                }
-            }
-            catch (Exception)
-            {
-                return View();
-            }
-            return View();
-        }
+        //[AllowAnonymous]
+        //public IActionResult Conta()
+        //{
+        //    try
+        //    {
+        //        identityUser = HttpContext.User.Identity.Name.ToUpper().Trim();
+        //        if (identityUser.Contains("\\"))
+        //        {
+        //            ud = identityUser.Split("\\");
+        //            DominioNome = ud[0];
+        //            UsuarioNome = ud[1];
+        //        }
+        //        else if (!string.IsNullOrEmpty(UsuarioNome))
+        //        {
+        //            _dominioContext = new PrincipalContext(ContextType.Domain, DominioNome);
+        //            _encontradoUsuario = UserPrincipal.FindByIdentity(_dominioContext, IdentityType.SamAccountName, UsuarioNome);
+        //            if (_encontradoUsuario != null) { validado = true; }
+        //            else if (!_SERVERS.Contains(DominioNome.ToUpper()) || !validado) { return View(); }
+        //            else
+        //            {
+        //                try
+        //                {
+        //                    var logado = new SegurancaRepository().ObterUsuarioPorLogin(UsuarioNome);
+        //                    if (logado.Sucesso)
+        //                    {
+        //                        //FormsAuthentication
+        //                    }
+        //                }
+        //                catch (Exception)
+        //                {
+        //                    ModelState.AddModelError("Error_Authentic", "Ocorreu erro inesperado.Tente mais tarde");
+        //                    return View();
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return View();
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return View();
+        //    }
+        //    return View();
+        //}
 
-        [AllowAnonymous]
-        [HttpPost]
-        public IActionResult Autenticacao(ContaViewModel model)
-        {
-            try
-            {
-                if (model.UsuarioNome.Contains("\\"))
-                {
-                    ud = model.UsuarioNome.ToUpper().Trim().Split("\\");
-                    DominioNome = ud[0];
-                    UsuarioNome = ud[1];
-                }
-                else
-                {
-                }
-                if (!_SERVERS.Contains(DominioNome.ToUpper().Trim()))
-                {
-                    ModelState.AddModelError("Error_Authentic", "Usuário/Senha Inválido");
-                    return View("Conta", model);
-                }
+        //[AllowAnonymous]
+        //[HttpPost]
+        //public IActionResult Autenticacao(ContaViewModel model)
+        //{
+        //    try
+        //    {
+        //        if (model.UsuarioNome.Contains("\\"))
+        //        {
+        //            ud = model.UsuarioNome.ToUpper().Trim().Split("\\");
+        //            DominioNome = ud[0];
+        //            UsuarioNome = ud[1];
+        //        }
+        //        else
+        //        {
+        //        }
+        //        if (!_SERVERS.Contains(DominioNome.ToUpper().Trim()))
+        //        {
+        //            ModelState.AddModelError("Error_Authentic", "Usuário/Senha Inválido");
+        //            return View("Conta", model);
+        //        }
 
-                var credenciais = new CredentialDto { Domain = DominioNome, Username = UsuarioNome, Password = model.Senha  };
-                var serializarCredenciais = JsonConvert.SerializeObject(credenciais);
-                var credenciaisSerializeCriptografadas = KryptonHelper.Encriptar(serializarCredenciais, "15m");
-                var logado = new SegurancaRepository().ValidarCredenciais(new ValidateCredentialsRequest { Credential = credenciaisSerializeCriptografadas });
-                if (logado)
-                {
-                    var logadoOK = new SegurancaRepository().ObterUsuarioPorLogin(UsuarioNome);
-                    if (logadoOK.Sucesso)
-                    {
-                        var claimsPerfil = from form in logadoOK.Usuario.Perfis.Select(a => a.TxPerfil) select new Claim("Perfil", form);
-                        if (claimsPerfil.Select(a => a.Value).Contains(_PTI))
-                        {
-                            //HttpContext.Session.SetString("", "");
+        //        var credenciais = new CredentialDto { Domain = DominioNome, Username = UsuarioNome, Password = model.Senha  };
+        //        var serializarCredenciais = JsonConvert.SerializeObject(credenciais);
+        //        var credenciaisSerializeCriptografadas = KryptonHelper.Encriptar(serializarCredenciais, "15m");
+        //        var logado = new SegurancaRepository().ValidarCredenciais(new ValidateCredentialsRequest { Credential = credenciaisSerializeCriptografadas });
+        //        if (logado)
+        //        {
+        //            var logadoOK = new SegurancaRepository().ObterUsuarioPorLogin(UsuarioNome);
+        //            if (logadoOK.Sucesso)
+        //            {
+        //                var claimsPerfil = from form in logadoOK.Usuario.Perfis.Select(a => a.TxPerfil) select new Claim("Perfil", form);
+        //                if (claimsPerfil.Select(a => a.Value).Contains(_PTI))
+        //                {
+        //                    //HttpContext.Session.SetString("", "");
 
-                            //HttpContext.Session.Set(UsuarioMaster, logadoOK.Usuario.Matricula.ToString());
+        //                    //HttpContext.Session.Set(UsuarioMaster, logadoOK.Usuario.Matricula.ToString());
                             
-                            //["UsuarioMaster"] = logadoOK.Usuario.Matricula.ToString();
-                            //Session["NmUsuarioMaster"] = logadoOK.Usuario.Nome;
-                            //Session["NmCasMaster"] = logadoOK.Usuario.Cas;
-                            return RedirectToAction("TIPerfil", "Conta");
-                        }
-                    }
-                }
+        //                    //["UsuarioMaster"] = logadoOK.Usuario.Matricula.ToString();
+        //                    //Session["NmUsuarioMaster"] = logadoOK.Usuario.Nome;
+        //                    //Session["NmCasMaster"] = logadoOK.Usuario.Cas;
+        //                    return RedirectToAction("TIPerfil", "Conta");
+        //                }
+        //            }
+        //        }
 
-            }
-            catch (Exception e)
-            {
-                ModelState.AddModelError("Error_Authentic", e.Message);
-                return View("Conta", model);
-            }
-            return View("Conta", model);
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        ModelState.AddModelError("Error_Authentic", e.Message);
+        //        return View("Conta", model);
+        //    }
+        //    return View("Conta", model);
+        //}
 
-        private ObterCredenciaisResponse Autenticacao()
-        {
-            string cookieSso = Request.Cookies["SSO"];
-            var apps = new List<string>();
-            /*s
-            //Cookie não nulo e o usuário possui um perfil para o Lotus.
-            if (cookieSso != null && cookieSso["Token"] != null)
-            {
-            }
-            else if (cookieSso != null)
-            {
-                if (cookieSso["AppRequest"] == null)
-                    cookieSso.Values.Add("AppRequest", "CANALILHAS");
-                else
-                    cookieSso["AppRequest"] = "CANALILHAS";
-            }
-            else
-            {
-                ookieSso = Response.Cookies["SSO"];
-                cookieSso.Values.Add("AppRequest", "CANALILHAS");
-            }
-            Response.SetCookie(cookieSso);*/
-            return null;
-        }
+        //private ObterCredenciaisResponse Autenticacao()
+        //{
+        //    string cookieSso = Request.Cookies["SSO"];
+        //    var apps = new List<string>();
+        //    /*s
+        //    //Cookie não nulo e o usuário possui um perfil para o Lotus.
+        //    if (cookieSso != null && cookieSso["Token"] != null)
+        //    {
+        //    }
+        //    else if (cookieSso != null)
+        //    {
+        //        if (cookieSso["AppRequest"] == null)
+        //            cookieSso.Values.Add("AppRequest", "CANALILHAS");
+        //        else
+        //            cookieSso["AppRequest"] = "CANALILHAS";
+        //    }
+        //    else
+        //    {
+        //        ookieSso = Response.Cookies["SSO"];
+        //        cookieSso.Values.Add("AppRequest", "CANALILHAS");
+        //    }
+        //    Response.SetCookie(cookieSso);*/
+        //    return null;
+        //}
 
         public IActionResult NaoAutorizado()
         {

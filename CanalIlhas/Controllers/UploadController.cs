@@ -37,7 +37,7 @@ namespace CanalIlhas.Controllers
 
                 foreach (IFormFile source in files)
                 {
-                    string arquivoNome = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.ToString().Trim('"');
+                    string arquivoNome = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.ToString().Trim('"').ToLower();
 
                     arquivoNome = this.AsseguraNomeCorretoArquivo(arquivoNome);
 

@@ -1,92 +1,90 @@
 ﻿@{
-    ViewData["Title"] = "Upload";
+    ViewData["Title"] = "Criação de Playlist";
 }
 
-@{
-    Layout = null;
-}
+<fieldset>
+    <form>
+        <legend>Criar Playlist:</legend>
 
-<head>
-    <title></title>
-    @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
-</head>
-<body>
-    <fieldset style="display:inline;">
-        <legend>Upload:</legend>
-        <div style="position:relative; width:80%; background:#f0f0f0">
-            <div id="progress" style="display:none; background: blue; height:5%; width:0%"></div>
+        @Html.Partial("_ObterListaCas")
+
+        <div class="form-group row">
+            <div class="col-xs-3">
+                @*<label for="sel1">Nome Playlist:</label>*@
+                <div class="input-group">
+                    <span class="input-group-addon">Nome Playlist:</span>
+                    <input id="msg" type="text" class="form-control" name="msg" placeholder="Nome da playlist">
+                </div>
+            </div>
         </div>
-        <input type="file" id="file" />
-        <button>Inserir</button>
-        <br />
-        <progress value="0" max="100" id="progress"></progress>
-        <br />
-    </fieldset>
 
-    <br />
+        @Html.Partial("_ObterListaTipoArquivo")
+        @Html.Partial("_ObterVideosUpload")
 
-    <fieldset style="display:inline;">
-        <legend>Lista de Arquivos:</legend>
-        <div style="position:relative;">
-            <table>
-                <tr>
-                    <th>Completo</th>
-                    <th>Nome arquivo</th>
-                    <th>Tamanho</th>
-                    <th>Exluir</th>
-                </tr>
-                <!--bind da api-->
-                <tbody id="todos"></tbody>
-            </table>
+        <div class="row">
+
+            <div class="col-md-3 col-md-offset-3">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Inserir</button>
+                </div>
+            </div>
         </div>
-    </fieldset>
-            @*<script>
-                var uploadEnum = {
-                    Sucesso: 1,
-                    Falha: 2,
-                    Erro: 3
-                };
+        <fieldset>
+            <legend>Playlist Cas RJ01</legend>
+            <div class="container">
+                @*<p>The .table-hover class enables a hover state on table rows:</p>*@
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Mídia</th>
+                            <th>Ordenação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Vídeo 1</td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                        <tr>
+                            <td>Vídeo 2</td>
+                            <td><a href="#">2</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
 
-                $("button").click(function () {
-                    var progressEle = $("#progress");
-                    progressEle.css("display", "block").delay("slow");
-                    progressEle.css("background", "#1414bd");                    
+        <div class="form-group ">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
 
-                    var data = document.getElementById("file").files[0];
-
-                    var formData = new FormData();
-
-                    formData.append("files", data);
-
-                    $.ajax({
-                        url: "/CanalIlhas/UploadFile",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        type: "POST",
-                        xhr: function () {
-                            var xhr = new window.XMLHttpRequest();
-                            xhr.upload.addEventListener("progress", function (evt) {
-                                if (evt.lengthComputable) {
-                                    var progress = Math.round((evt.loaded / evt.total) * 100);
-                                    progressEle.width(progress + "%");
-                                }
-                            }, false);
-                            return xhr;
-                        },
-                        success: function (data) {
-                            if (data.state == 1) {
-                                //progressEle.css("background", "green").slideUp(200).delay(2000).fadeIn(400);
-                                progressEle.css("background", "#02a02c").delay("slow");
-                                //progressEle.css("display", "none").slideUp(200).delay(2000).fadeIn(400);
-                            }
-                            else
-                            {
-                                progressEle.css("background", "#ff0000").delay("slow");
-                                progressEle.css("display", "none")
-                            }
-                        }
-                    });
-                });
-            </script>*@
-</body>
+        <fieldset>
+            <legend>Lista de Playlist:</legend>
+            <div class="container">
+                @*<p>The .table-hover class enables a hover state on table rows:</p>*@
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nome Playlist</th>
+                            <th>Edição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Playlist 1</td>
+                            <td><a href="#">Play</a></td>
+                            <td><a href="#">Pause</a></td>
+                            <td><a href="#">Excluir</a></td>
+                        </tr>
+                        <tr>
+                            <td>Playlist 2</td>
+                            <td><a href="#">Play</a></td>
+                            <td><a href="#">Pause</a></td>
+                            <td><a href="#">Excluir</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+    </form>
+</fieldset>

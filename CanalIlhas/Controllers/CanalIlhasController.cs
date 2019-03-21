@@ -75,6 +75,24 @@ namespace CanalIlhas.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult ObterListaCas()
+        {
+            return PartialView();
+        }
+
+        [HttpGet]
+        public IActionResult ObterListaTipoArquivo()
+        {
+            return PartialView();
+        }
+
+        [HttpGet]
+        public IActionResult ObterVideosUpload()
+        {
+            return PartialView();
+        }
+
         /*
         [HttpGet]
         public IActionResult UploadArquivo()

@@ -6,7 +6,7 @@
 
 function validarArquivoUpload(pArquivoNome) {
     var extensoes_permitidas = new Array("wvm", "mp4", "mpeg-4", "avi", "jpg", "jpeg", "png", "gif", "bmp", "pps", "pdf", "jpg", "zip");
-    var arquivo_extensao = pArquivoNome.split('.').pop();
+    var arquivo_extensao = pArquivoNome.split('.').pop().toLowerCase();
 
     for (var i = 0; i <= extensoes_permitidas.length; i++) {
         if (extensoes_permitidas[i] == arquivo_extensao) {
@@ -76,10 +76,10 @@ $("button").click(function () {
                     //progressEle.css("background", "green").slideUp(200).delay(2000).fadeIn(400);
                     progressEle.delay(1000);
                     carregar.css("visibility", "hidden");
-                    progressEle.css("background", "green").delay("slow");
                     //progressEle.css("display", "none").slideUp(200).delay(2000).fadeIn(400);
                     document.getElementById('file').value = '';
                     alert("Enviado com sucesso!");
+                    progressEle.css("background", "green").delay("slow");
                     document.getElementById("inserir").disabled = false;
                     document.getElementById("file").disabled = false;                    
                 }
